@@ -23,7 +23,7 @@ def learn( mileage, price , options, g):
         theta[1] -= ( sum1 / len( mileage ) ) * learningRate
 
     if options['visualizer'] : g.update(mileage, price, theta)
-    if options['visualizer'] : g.show()
+    if options['visualizer'] : g.show(theta)
     
     return theta
 
@@ -70,7 +70,7 @@ def main():
     parser.add_argument( "data", help="Data's file", type=str )
     parser.add_argument( "-i", "--iterations", nargs='?', dest="iterations", help="Number of Iterations", type=int, const=options['nbrIterations'], default=options['nbrIterations'])
     parser.add_argument( "-lr", "--learningRate", nargs='?', dest="learningRate", help="Learning Rate", type=float, const=options['learningRate'], default=options['learningRate'])
-    parser.add_argument("-v", "--visualizer", help="Display Visualizer", action="store_true")
+    parser.add_argument( "-v", "--visualizer", help="Display Visualizer", action="store_true")
     args = parser.parse_args()
 
     options['nbrIterations'] = args.iterations
