@@ -4,8 +4,6 @@ import utils
 
 import time
 
-
-
 class Graph:
     def __init__(self, mileage, price, nbrIterations):
         self.nbrIterations = nbrIterations

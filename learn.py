@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import utils
 import argparse
+
 from graph import Graph
+import utils
 
 def learn( mileage, price , options, g):
     learningRate = options['learningRate']
