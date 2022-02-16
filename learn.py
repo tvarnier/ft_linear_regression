@@ -37,6 +37,11 @@ def normalize( data ):
     tmp = norm(tmp)
     return tmp
 
+def errorGetData( file ):
+    file.close()
+    print("Error: Incorrect data file content")
+    return []
+
 def getData( file ):
     data = []
     file1 = open( file, 'r' ) 
@@ -48,7 +53,15 @@ def getData( file ):
         if count == 0:
             continue
         t = line.split( "," )
-        t = [ float(t[0]), float(t[1]) ]
+        if len(t) != 2:
+            return errorGetData( file1 )
+        try:
+            t = [ float(t[0]), float(t[1]) ]
+        except ValueError:
+            return errorGetData( file1 )
+        except IndexError:
+            return errorGetData( file1 )
+            
         data.append( t )
 
     file1.close()
@@ -58,7 +71,8 @@ def getData( file ):
 def setTheta( file, data ):
     f = open(file, "w")
     f.write(','.join(map(str,data)))
-    f.close
+    f.close()
+
 
 def main():
     options = {
@@ -79,6 +93,8 @@ def main():
     options['visualizer'] = args.visualizer
 
     data = getData( args.data )
+    if data == []:
+        return 0
     data = data[data[:, 0].argsort()]
 
     mileage = np.array( data[ :, 0 ] )
@@ -92,9 +108,12 @@ def main():
 
     theta = learn( mileageNormalize, priceNormalize, options, g)
 
-    setTheta( "theta.csv", utils.realTheta( mileage, price, theta ) )
+    try:
+        setTheta( "theta.csv", utils.realTheta( mileage, price, theta ) )
+    except Exception as e:
+        print(e)
+        return 1
 
-    print(theta)
     print(utils.realTheta( mileage, price, theta ))
  
 if __name__ == "__main__":

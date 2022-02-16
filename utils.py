@@ -6,7 +6,7 @@ def cost_function( mileage, price , theta ):
     error = 0.0
     for i in range( nbrData ):
         error += predict( theta, mileage[i] ) - price[i]
-    return abs( error / nbrData )
+    return ( error / nbrData ) * -1
 
 def priceFromNormalizeMileage( mileage, price, theta ):
     minPrice = float(min(price))

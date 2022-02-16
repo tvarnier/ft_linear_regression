@@ -2,6 +2,11 @@ import numpy as np
 import utils
 import argparse
 
+def error( file ):
+    file.close()
+    print("Error: Incorrect `theta.csv` content")
+    return []
+
 def getTheta( file ):
     try :
         file1 = open( file, 'r' )
@@ -12,13 +17,17 @@ def getTheta( file ):
     lines = file1.readlines()
 
     if len(lines) == 1 :
-        data = data = lines[0].split( "," )
-        data = [ float(data[0]), float(data[1]) ]
-        file1.close()
-        return np.array( data )
+        data = lines[0].split( "," )
+        if len(data) == 2:
+            try :
+                data = [ float(data[0]), float(data[1]) ]
+            except ValueError :
+                return error( file1 )
+            file1.close()
+            return np.array( data )
+        return error( file1 )
     else :
-        file1.close()
-        return []
+        return error( file1 )
 
 def main():
     parser = argparse.ArgumentParser()
